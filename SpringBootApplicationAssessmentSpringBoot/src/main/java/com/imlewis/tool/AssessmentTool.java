@@ -19,37 +19,17 @@ public class AssessmentTool {
 		StringBuffer colorResponse = new StringBuffer(COLOR_APPENDER);
 		try {
 			Color color = ColorFactory.valueOf(colorString.toLowerCase());
-			colorResponse.append(getRGBCoodinates(color, ColorType.RED));
-			colorResponse.append(getRGBCoodinates(color, ColorType.GREEN));
-			colorResponse.append(getRGBCoodinates(color, ColorType.BLUE));
+			colorResponse.append(getRGBCoodinates(color.getRed()));
+			colorResponse.append(getRGBCoodinates(color.getGreen()));
+			colorResponse.append(getRGBCoodinates(color.getBlue()));
 		} catch (IllegalArgumentException illegalArgumentException) {
 			colorResponse = new StringBuffer(NOT_A_VALID_COLOR);
 		}
 		return colorResponse.toString();
 	}
 
-	public static String getRGBCoodinates(Color colorRGB, ColorType type) {
-		int intColorValue = 0;
-
-		switch (type) {
-		case RED: {
-			intColorValue = colorRGB.getRed();
-			break;
-		}
-		case GREEN: {
-			intColorValue = colorRGB.getGreen();
-			break;
-		}
-		case BLUE: {
-			intColorValue = colorRGB.getBlue();
-			break;
-		}
-		}
+	public static String getRGBCoodinates(int intColorValue) {
 		return Integer.toHexString(intColorValue).length() < 2 ? HEX_COLOR_APPENDER + Integer.toHexString(intColorValue)
 				: Integer.toHexString(intColorValue);
 	}
-}
-
-enum ColorType {
-	RED, GREEN, BLUE;
 }
