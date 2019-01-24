@@ -10,6 +10,8 @@ public class AssessmentTool {
 	public static final String COLOR_APPENDER = "#";
 	public static final String HEX_COLOR_APPENDER = "0";
 	public static final String NOT_A_VALID_COLOR = "N/A";
+	public static final String TWO_DECIMAL_POINTS = "%.2f";
+	public static final String NO_DECIMAL_POINTS = "%.0f";
 
 	public static float getFloatValue(String value) {
 		return StringUtils.isNotEmpty(value) ? Float.parseFloat(value) : 0.0f;
@@ -31,5 +33,11 @@ public class AssessmentTool {
 	public static String getRGBCoodinates(int intColorValue) {
 		return Integer.toHexString(intColorValue).length() < 2 ? HEX_COLOR_APPENDER + Integer.toHexString(intColorValue)
 				: Integer.toHexString(intColorValue);
+	}
+
+	public static String getFormattedPrice(String price) {
+		float floatPrice = getFloatValue(price);
+		return floatPrice < 10 ? String.format(TWO_DECIMAL_POINTS, floatPrice)
+				: String.format(NO_DECIMAL_POINTS, floatPrice);
 	}
 }

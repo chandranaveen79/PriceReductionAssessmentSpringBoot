@@ -36,5 +36,4 @@ public class Price {
 	public void setThen2(String then2) {
 		this.then2 = then2;
 	}
-	
 }
