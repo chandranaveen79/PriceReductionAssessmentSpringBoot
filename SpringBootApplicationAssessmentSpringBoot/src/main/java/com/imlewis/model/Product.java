@@ -15,7 +15,6 @@ import com.imlewis.tool.AssessmentTool;
 public class Product {
 
 	public static final String NOW_PRICE_DELIMITER = "to";
-	public static final String GBP_CURRENCY = "£";
 
 	private String productId;
 	private String title;
@@ -37,10 +36,6 @@ public class Product {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getNowPrice() {
-		return GBP_CURRENCY + getNow();
 	}
 
 	public void setPriceLabel(String priceLabel) {
@@ -69,30 +64,22 @@ public class Product {
 
 	@JsonIgnore
 	public String getNow() {
-		if (getPrice() == null)
-			return String.valueOf(Float.MIN_VALUE);
-		return filteredNowPrice(getPrice().getNow());
+		return getPrice() == null ? String.valueOf(Float.MIN_VALUE) : filteredNowPrice(getPrice().getNow());
 	}
 
 	@JsonIgnore
 	public String getWas() {
-		if (getPrice() == null)
-			return String.valueOf(Float.MIN_VALUE);
-		return getPrice().getWas();
+		return getPrice() == null ? String.valueOf(Float.MIN_VALUE) : getPrice().getWas();
 	}
 
 	@JsonIgnore
 	public String getThen1() {
-		if (getPrice() == null)
-			return String.valueOf(Float.MIN_VALUE);
-		return getPrice().getThen1();
+		return getPrice() == null ? String.valueOf(Float.MIN_VALUE) : getPrice().getThen1();
 	}
 
 	@JsonIgnore
 	public String getThen2() {
-		if (getPrice() == null)
-			return String.valueOf(Float.MIN_VALUE);
-		return getPrice().getThen2();
+		return getPrice() == null ? String.valueOf(Float.MIN_VALUE) : getPrice().getThen2();
 	}
 
 	@JsonIgnore
@@ -111,48 +98,39 @@ public class Product {
 
 	@JsonIgnore
 	public String buildPriceLabelForNow() {
-		StringBuffer priceLabel = new StringBuffer(StringUtils.EMPTY);
-
-		if (StringUtils.isNotEmpty(getWas())) {
-			priceLabel.append("Was ").append(GBP_CURRENCY).append(AssessmentTool.getFormattedPrice(getWas()))
-					.append(", ");
-			priceLabel.append("now ").append(getNowPrice());
-		}
-		return priceLabel.toString();
+		return String.join(StringUtils.EMPTY, "Was ", AssessmentTool.getFormattedPrice(getWas()), ", now",
+				AssessmentTool.getFormattedPrice(getNow()));
 	}
 
 	@JsonIgnore
 	public String buildPriceLabelForNowThen() {
-		StringBuffer priceLabel = new StringBuffer(StringUtils.EMPTY);
+		String priceLabel = StringUtils.EMPTY;
 
 		String thenPrice = StringUtils.isNotEmpty(getThen2()) ? getThen2()
 				: (StringUtils.isNotEmpty(getThen1()) ? getThen1() : null);
 
-		if (StringUtils.isNotEmpty(getWas())) {
-			priceLabel.append("Was ").append(GBP_CURRENCY).append(AssessmentTool.getFormattedPrice(getWas()))
-					.append(", ");
-			if (StringUtils.isNotEmpty(thenPrice)) {
-				priceLabel.append("then ").append(GBP_CURRENCY).append(AssessmentTool.getFormattedPrice(thenPrice))
-						.append(", ");
-			}
-			priceLabel.append("now ").append(getNowPrice());
+		priceLabel = String.join(StringUtils.EMPTY, "Was ", AssessmentTool.getFormattedPrice(getWas()), ", ");
+		if (StringUtils.isNotEmpty(thenPrice)) {
+			priceLabel = String.join(StringUtils.EMPTY, priceLabel, "then ",
+					AssessmentTool.getFormattedPrice(thenPrice), ", ");
 		}
-		return priceLabel.toString();
+		return String.join(StringUtils.EMPTY, priceLabel, "now ", AssessmentTool.getFormattedPrice(getNow()));
 	}
 
 	@JsonIgnore
 	public String buildPriceLabelForDiscount() {
-		StringBuffer priceLabel = new StringBuffer(StringUtils.EMPTY);
+		String priceLabel = StringUtils.EMPTY;
 
 		if (StringUtils.isNotEmpty(getWas())) {
 			float previousPrice = AssessmentTool.getFloatValue(getWas());
 			float currentPrice = AssessmentTool.getFloatValue(getNow());
 			if (previousPrice > 0) {
 				int discount = (int) Math.round((currentPrice / previousPrice) * 100);
-				priceLabel.append(discount).append("% off").append(" - now ").append(GBP_CURRENCY).append(currentPrice);
+				priceLabel = String.join(StringUtils.EMPTY, String.valueOf(discount), "% off - now ",
+						AssessmentTool.getFormattedPrice(getNow()));
 			}
 		}
-		return priceLabel.toString();
+		return priceLabel;
 	}
 
 }

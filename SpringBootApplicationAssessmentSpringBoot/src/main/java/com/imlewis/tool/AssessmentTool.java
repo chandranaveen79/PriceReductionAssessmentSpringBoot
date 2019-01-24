@@ -12,6 +12,7 @@ public class AssessmentTool {
 	public static final String NOT_A_VALID_COLOR = "N/A";
 	public static final String TWO_DECIMAL_POINTS = "%.2f";
 	public static final String NO_DECIMAL_POINTS = "%.0f";
+	public static final String GBP_CURRENCY = "£";
 
 	public static float getFloatValue(String value) {
 		return StringUtils.isNotEmpty(value) ? Float.parseFloat(value) : 0.0f;
@@ -37,7 +38,7 @@ public class AssessmentTool {
 
 	public static String getFormattedPrice(String price) {
 		float floatPrice = getFloatValue(price);
-		return floatPrice < 10 ? String.format(TWO_DECIMAL_POINTS, floatPrice)
-				: String.format(NO_DECIMAL_POINTS, floatPrice);
+		return floatPrice < 10 ? GBP_CURRENCY + String.format(TWO_DECIMAL_POINTS, floatPrice)
+				: GBP_CURRENCY  + String.format(NO_DECIMAL_POINTS, floatPrice);
 	}
 }

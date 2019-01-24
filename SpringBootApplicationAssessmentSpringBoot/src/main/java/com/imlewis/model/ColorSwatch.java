@@ -1,15 +1,17 @@
 package com.imlewis.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.imlewis.tool.AssessmentTool;
 
 @JsonSerialize
+@JsonPropertyOrder({ "color", "rgbColor", "skuId" })
 public class ColorSwatch {
 	private String basicColor;
 	private String color;
 	private String skuId;
 	
-	public String getRbgColor() {
+	public String getRgbColor() {
 		return AssessmentTool.getHexColor(getBasicColor());
 	}
 	public String getBasicColor() {
