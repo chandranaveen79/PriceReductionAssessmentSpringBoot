@@ -30,8 +30,8 @@ public class AssessmentTool {
 	}
 
 	private static String getRGBCoodinates(int intColorValue) {
-		return Integer.toHexString(intColorValue).length() < 2 ? HEX_COLOR_APPENDER + Integer.toHexString(intColorValue)
-				: Integer.toHexString(intColorValue);
+		return Integer.toHexString(intColorValue).length() < 2 ? HEX_COLOR_APPENDER + Integer.toHexString(intColorValue).toUpperCase()
+				: Integer.toHexString(intColorValue).toUpperCase();
 	}
 
 	public static String getFormattedPrice(String price) {
